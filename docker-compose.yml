@@ -1,0 +1,87 @@
+version: '3'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9000:9000
+  nginx:
+    image: tron.proxy
+    build:
+      context: /home/flynn/Grid/
+      dockerfile: Dockerfile.nginx
+    container_name: tron.proxy
+    restart: always
+    ports:
+      - 80:80
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - /home/flynn/Grid/plex:/config
+      - /home/flynn/Grid/tv:/tv
+      - /home/flynn/Grid/movies:/movies
+    restart: unless-stopped
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - AUTO_UPDATE=true
+    volumes:
+      - /home/flynn/Grid/jackett/config:/config
+      - /home/flynn/Grid/jackett/dl:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/flynn/Grid/radarr:/config
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/flynn/Grid/sonarr:/config
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/flynn/Grid/overseerr:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
