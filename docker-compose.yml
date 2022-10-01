@@ -30,10 +30,11 @@ services:
       - PUID=1000
       - PGID=1000
       - VERSION=docker
+      - PLEX_CLAIM= #optional
     volumes:
       - /home/flynn/Grid/plex:/config
       - /home/flynn/Grid/tv:/tv
-      - /home/flynn/Grid/movies:/movies
+      - /mnt/plex/:/movies
     restart: unless-stopped
   jackett:
     image: lscr.io/linuxserver/jackett:latest
@@ -85,3 +86,28 @@ services:
     ports:
       - 5055:5055
     restart: unless-stopped
+  netdata:
+    image: netdata/netdata
+    container_name: netdata
+    hostname: MCP.encom.local
+    ports:
+      - 19999:19999
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - netdataconfig:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+
+volumes:
+  netdataconfig:
+  netdatalib:
+  netdatacache:
