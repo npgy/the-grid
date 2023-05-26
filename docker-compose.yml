@@ -59,9 +59,10 @@ services:
       - TZ=America/New_York
     volumes:
       - /home/flynn/Grid/radarr:/config
+      - /mnt/plex:/plex
     ports:
       - 7878:7878
-    restart: unless-stopped
+    restart: always
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
@@ -128,6 +129,25 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /etc/os-release:/host/etc/os-release:ro
+  # mc:
+  #   image: eclipse-temurin:17-alpine
+  #   container_name: mc 
+  #   ports:
+  #     - 47491:47491
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /home/flynn/Grid/mcserver:/mcserver
+  #   working_dir: /mcserver
+  #   entrypoint: ["java", "-Xms10G", "-Xmx10G", "-XX:+UseG1GC", 
+  #   "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200", 
+  #   "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC",
+  #   "-XX:+AlwaysPreTouch", "-XX:G1NewSizePercent=30",
+  #   "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M",
+  #   "-XX:G1ReservePercent=20", "-XX:G1HeapWastePercent=5",
+  #   "-XX:G1MixedGCCountTarget=4", "-XX:InitiatingHeapOccupancyPercent=15",
+  #   "-XX:G1MixedGCLiveThresholdPercent=90", "-XX:G1RSetUpdatingPauseTimePercent=5",
+  #   "-XX:SurvivorRatio=32", "-XX:+PerfDisableSharedMem", "-XX:MaxTenuringThreshold=1",
+  #   "-Daikars.new.flags=true", "-jar", "paper.jar", "--nogui"]
 
 volumes:
   netdataconfig:
