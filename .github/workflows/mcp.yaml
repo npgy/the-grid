@@ -15,4 +15,6 @@ jobs:
           private_key_filename: key.pem
           private_key_value: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          service_token_id: 4536
+          service_token_secret: fake_secret
           commands: uname -a
