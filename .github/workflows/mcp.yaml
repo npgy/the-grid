@@ -17,4 +17,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           service_token_id: 4536
           service_token_secret: fake_secret
-          commands: uname -a
+          commands: |
+            uname -a
+            echo "com truise"
+            echo "im hacked into joes server lol"
