@@ -20,4 +20,4 @@ jobs:
             HELLO:${{ secrets.HELLO }}
       - name: get secrets
         run: |
-          echo ${{ steps.gen.outputs.secret_yaml}}
+          echo "${{ steps.gen.outputs.secret_yaml}}"
