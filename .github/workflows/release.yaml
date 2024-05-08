@@ -6,13 +6,14 @@ on:
 
 jobs:
   gen_secrets:
-  name: Generate secrets
-  steps:
-    - name: gen secrets
-      uses: and-fm/simple-k8s-secret-action@develop
-      with:
-        secrets_name: test_secrets
-        secrets_namespace: grid-dev
-        secrets: |-
-          TEST_SECRET:${{ secrets.TEST_SECRET }}
-          HELLO:${{ secrets.HELLO }}
+    runs-on: ubuntu-latest
+    name: Generate secrets
+    steps:
+      - name: gen secrets
+        uses: and-fm/simple-k8s-secret-action@develop
+        with:
+          secrets_name: test_secrets
+          secrets_namespace: grid-dev
+          secrets: |-
+            TEST_SECRET:${{ secrets.TEST_SECRET }}
+            HELLO:${{ secrets.HELLO }}
