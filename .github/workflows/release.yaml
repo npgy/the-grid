@@ -3,12 +3,18 @@ name: Secret deploy
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
+    tags: none
 
 jobs:
   gen_secrets:
     runs-on: ubuntu-latest
     name: Generate secrets
     steps:
+      - name: install curl
+        run: |
+          sudo apt-get update
+          sudo apt-get install curl
       - name: gen secrets
         uses: and-fm/simple-k8s-secret-action@develop
         id: gen
