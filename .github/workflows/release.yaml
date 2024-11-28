@@ -20,12 +20,6 @@ jobs:
           secrets: |-
             TEST_SECRET:${{ secrets.TEST_SECRET }}
             HELLO:${{ secrets.HELLO }}
-          annotations: |
-            sealedsecrets.bitnami.com/cluster-wide: "true"
-            reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-            reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "*"
-            reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-            reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "*"
       - name: get secrets
         run: |
           echo "${{ steps.gen.outputs.out_yaml}}"
