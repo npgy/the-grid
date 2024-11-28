@@ -28,4 +28,4 @@ jobs:
             reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "*"
       - name: get secrets
         run: |
-          echo "${{ steps.gen.outputs.secret_yaml}}"
+          echo "${{ steps.gen.outputs.out_yaml}}"
