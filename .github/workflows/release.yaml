@@ -12,14 +12,20 @@ jobs:
     name: Generate secrets
     steps:
       - name: gen secrets
-        uses: and-fm/simple-k8s-secret-action@develop
+        uses: and-fm/k8s-yaml-action@develop
         id: gen
         with:
-          secrets_name: test_secrets
-          secrets_namespace: grid-dev
+          name: test_secrets
+          namespace: grid-dev
           secrets: |-
             TEST_SECRET:${{ secrets.TEST_SECRET }}
             HELLO:${{ secrets.HELLO }}
+          annotations: |
+            sealedsecrets.bitnami.com/cluster-wide: "true"
+            reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+            reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "*"
+            reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+            reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "*"
       - name: get secrets
         run: |
           echo "${{ steps.gen.outputs.secret_yaml}}"
