@@ -7,32 +7,18 @@ on:
     tags: none
 
 jobs:
-  connect:
-    runs-on: ubuntu-latest
-    name: cloudflared-test
-    steps:
-      - name: Connect and run command on remote server
-        uses: and-fm/cloudflared-ssh-action@v3
-        with:
-          host: testssh.and.fm
-          username: nick
-          private_key_filename: key.pem
-          private_key_value: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          commands: uname -a
-  # gen_secrets:
-  #   runs-on: ubuntu-latest
-  #   name: Generate secrets
-  #   steps:
-  #     - name: gen secrets
-  #       uses: and-fm/k8s-yaml-action@develop
-  #       id: gen
-  #       with:
-  #         name: test_secrets
-  #         namespace: grid-dev
-  #         secrets: |-
-  #           TEST_SECRET:${{ secrets.TEST_SECRET }}
-  #           HELLO:${{ secrets.HELLO }}
-  #     - name: get secrets
-  #       run: |
-  #         echo "${{ steps.gen.outputs.out_yaml}}"
+  runs-on: ubuntu-latest
+  name: Generate secrets
+  steps:
+    - name: gen secrets
+      uses: and-fm/k8s-yaml-action@develop
+      id: gen
+      with:
+        name: test_secrets
+        namespace: grid-dev
+        secrets: |-
+          TEST_SECRET:${{ secrets.TEST_SECRET }}
+          HELLO:${{ secrets.HELLO }}
+    - name: get secrets
+      run: |
+        echo "${{ steps.gen.outputs.out_yaml}}"
